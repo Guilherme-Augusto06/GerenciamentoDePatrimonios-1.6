@@ -63,7 +63,7 @@ const PatrimonioScreen: React.FC<PatrimonioScreenProps> = ({ onNavigate }) => {
 
   const fetchInventarios = async () => {
     try {
-      const response = await axios.get('http://192.168.0.17:8000/api/inventarios/');
+      const response = await axios.get('http://192.168.0.215:8000/api/inventarios/');
       setInventarios(response.data); // Atualiza o estado com os dados recebidos
     } catch (error) {
       console.error("Erro ao buscar os inventários", error);
@@ -90,7 +90,7 @@ const PatrimonioScreen: React.FC<PatrimonioScreenProps> = ({ onNavigate }) => {
           text: "Excluir",
           onPress: async () => {
             try {
-              const response = await axios.delete('http://192.168.0.17:8000/api/delete_inventario/', {
+              const response = await axios.delete('http://192.168.0.215:8000/api/delete_inventario/', {
                 data: { num_inventario: numInventario } // Usando num_inventario no corpo da requisição
               });
 
@@ -127,7 +127,7 @@ const PatrimonioScreen: React.FC<PatrimonioScreenProps> = ({ onNavigate }) => {
     }
 
     try {
-      const response = await axios.post('http://192.168.0.17:8000/api/add_inventario/', newItem);
+      const response = await axios.post('http://192.168.0.215:8000/api/add_inventario/', newItem);
       console.log("Resposta do servidor:", response.data); // Log da resposta do servidor
 
       Alert.alert("Sucesso", "Patrimônio adicionado com sucesso!"); // Mensagem de sucesso
@@ -180,7 +180,7 @@ const PatrimonioScreen: React.FC<PatrimonioScreenProps> = ({ onNavigate }) => {
     }
 
     try {
-      const response = await axios.put('http://192.168.0.17:8000/api/editar_inventario/', {
+      const response = await axios.put('http://192.168.0.215:8000/api/editar_inventario/', {
         num_inventario: selectedPatrimonio.num_inventario,
         denominacao: selectedPatrimonio.denominacao,
         localizacao: selectedPatrimonio.localizacao,
@@ -327,10 +327,10 @@ const PatrimonioScreen: React.FC<PatrimonioScreenProps> = ({ onNavigate }) => {
 
             <View style={styles.modalButtonsContainer}>
               <TouchableOpacity style={[styles.modalButton, themeStyles.modalButton]} onPress={handleAddItem}>
-                <Text style={[styles.modalButtonText, themeStyles.text]}>Adicionar</Text>
+                <Text style={[styles.modalButtonText, themeStyles.modalText]}>Adicionar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.modalButton, themeStyles.modalButton]} onPress={() => setModalVisible(false)}>
-                <Text style={[styles.modalButtonText, themeStyles.text]}>Fechar</Text>
+                <Text style={[styles.modalButtonText, themeStyles.modalText]}>Fechar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -394,25 +394,25 @@ const PatrimonioScreen: React.FC<PatrimonioScreenProps> = ({ onNavigate }) => {
                     isEditing ? (
                       <>
                         <TouchableOpacity style={[styles.modalButton, themeStyles.button]} onPress={handleUpdateItem}>
-                          <Text style={[styles.modalButtonText, themeStyles.text]}>Salvar</Text>
+                          <Text style={[styles.modalButtonText, themeStyles.modalText]}>Salvar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.modalButton, themeStyles.button]} onPress={() => setIsEditing(false)}>
-                          <Text style={[styles.modalButtonText, themeStyles.text]}>Cancelar</Text>
+                          <Text style={[styles.modalButtonText, themeStyles.modalText]}>Cancelar</Text>
                         </TouchableOpacity>
                       </>
                     ) : (
                       <>
                         <TouchableOpacity style={[styles.modalButton, themeStyles.button]} onPress={() => { setIsEditing(true); }}>
-                          <Text style={[styles.modalButtonText, themeStyles.text]}>Editar</Text>
+                          <Text style={[styles.modalButtonText, themeStyles.modalText]}>Editar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.modalButton, themeStyles.button]} onPress={() => handleDeleteItem(selectedPatrimonio.num_inventario)}>
-                          <Text style={[styles.modalButtonText, themeStyles.text]}>Excluir</Text>
+                          <Text style={[styles.modalButtonText, themeStyles.modalText]}>Excluir</Text>
                         </TouchableOpacity>
                       </>
                     )
                   )}
                   <TouchableOpacity style={[styles.modalButton, themeStyles.button]} onPress={() => setDetailsModalVisible(false)}>
-                    <Text style={[styles.modalButtonText, themeStyles.text]}>Fechar</Text>
+                    <Text style={[styles.modalButtonText, themeStyles.modalText]}>Fechar</Text>
                   </TouchableOpacity>
                 </View>
               </>
@@ -439,20 +439,20 @@ const PatrimonioScreen: React.FC<PatrimonioScreenProps> = ({ onNavigate }) => {
                 style={[styles.modalButton, themeStyles.modalButton]}
                 onPress={() => { setOrder('asc'); setFilterModalVisible(false); }}
               >
-                <Text style={[styles.modalButtonText, themeStyles.text]}>A - Z</Text>
+                <Text style={[styles.modalButtonText, themeStyles.modalText]}>A - Z</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.modalButton, themeStyles.modalButton]}
                 onPress={() => { setOrder('desc'); setFilterModalVisible(false); }}
               >
-                <Text style={[styles.modalButtonText, themeStyles.text]}>Z - A</Text>
+                <Text style={[styles.modalButtonText, themeStyles.modalText]}>Z - A</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
               style={[styles.closeButton, themeStyles.modalButton]}
               onPress={() => setFilterModalVisible(false)}
             >
-              <Text style={[styles.closeButtonText, themeStyles.text]}>Fechar</Text>
+              <Text style={[styles.closeButtonText, themeStyles.modalText]}>Fechar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -474,14 +474,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
   },
   header: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+    marginTop: 20,
+    marginBottom: 10,
   },
   iconButton: {
     backgroundColor: '#8B0000',
@@ -666,6 +665,9 @@ const lightTheme = StyleSheet.create({
   text: {
     color: '#000000'
   },
+  modalText: {
+    color: '#fff'
+  },
   input: {
     backgroundColor: '#f0f0f0',
     color: '#000000',
@@ -678,7 +680,7 @@ const lightTheme = StyleSheet.create({
     color: '#666666'
   },
   modalButton: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#8B0000',
     borderColor: '#cccccc'
   },
   placeholder: {
@@ -730,6 +732,9 @@ const darkTheme = StyleSheet.create({
   },
   text: {
     color: '#ffffff'
+  },
+  modalText: {
+    color: '#fff'
   },
   input: {
     backgroundColor: '#2a2a2a',

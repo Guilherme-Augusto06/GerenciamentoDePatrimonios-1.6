@@ -32,7 +32,7 @@ const ScannerScreen: React.FC<ScannerScreenProps> = ({ onNavigate }) => {
   useEffect(() => {
     async function fetchPatrimonios() {
       try {
-        const response = await axios.get<Patrimonio[]>('http://192.168.0.17:8000/api/inventarios/');
+        const response = await axios.get<Patrimonio[]>('http://192.168.0.215:8000/api/inventarios/');
         setPatrimonios(response.data);
       } catch (error) {
         console.error("Erro ao carregar patrimônios:", error);
@@ -84,7 +84,7 @@ const ScannerScreen: React.FC<ScannerScreenProps> = ({ onNavigate }) => {
         barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} 
       />
       <View style={styles.header}>
-        <IconButton iconName="arrow-back" onPress={() => onNavigate('Home')} />
+        <IconButton iconName="arrow-back" onPress={() => onNavigate('ServiceHome')} />
         <IconButton iconName="menu" onPress={() => onNavigate('Menu')} />
       </View>
 
@@ -161,10 +161,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   logo: {
-    width: 150,
+    width: 170,
     height: 70,
     resizeMode: 'contain',
     alignSelf: 'center',

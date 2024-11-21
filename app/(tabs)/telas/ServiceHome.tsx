@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 30,
     fontWeight: 'bold',
   },

@@ -69,13 +69,13 @@ const SalasScreen: React.FC<SalasScreenProps> = ({ onNavigate }) => {
       const userType = await AsyncStorage.getItem('userType');
 
       if (userType === 'Coordenador') {
-        const response = await axios.get('http://192.168.0.17:8000/api/salas');
+        const response = await axios.get('http://192.168.0.215:8000/api/salas');
         setSalas(response.data);
       } else if (userType === 'Professor') {
         const storedUser = await AsyncStorage.getItem('user');
 
         if (storedUser) {
-          const response = await axios.post('http://192.168.0.17:8000/api/get_user_room/', {
+          const response = await axios.post('http://192.168.0.215:8000/api/get_user_room/', {
             username: storedUser
           });
 
@@ -116,7 +116,7 @@ const SalasScreen: React.FC<SalasScreenProps> = ({ onNavigate }) => {
     };
 
     try {
-      const response = await axios.post('http://192.168.0.17:8000/api/add_sala/', newRoom);
+      const response = await axios.post('http://192.168.0.215:8000/api/add_sala/', newRoom);
       const createdRoom = response.data;
 
       setSalas([...salas, createdRoom]);
@@ -340,10 +340,10 @@ const SalasScreen: React.FC<SalasScreenProps> = ({ onNavigate }) => {
 
             <View style={styles.modalButtons}>
               <TouchableOpacity style={[styles.modalButton, themeStyles.modalButton]} onPress={handleAddRoom}>
-                <Text style={[styles.modalButtonText, themeStyles.text]}>Adicionar</Text>
+                <Text style={[styles.modalButtonText, themeStyles.modalText]}>Adicionar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.modalButton, themeStyles.modalButton]} onPress={() => setModalVisible(false)}>
-                <Text style={[styles.modalButtonText, themeStyles.text]}>Fechar</Text>
+                <Text style={[styles.modalButtonText, themeStyles.modalText]}>Fechar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -365,20 +365,20 @@ const SalasScreen: React.FC<SalasScreenProps> = ({ onNavigate }) => {
                 style={[styles.modalButton, themeStyles.modalButton]}
                 onPress={() => { setOrder('asc'); setFilterModalVisible(false); }}
               >
-                <Text style={[styles.modalButtonText, themeStyles.text]}>A - Z</Text>
+                <Text style={[styles.modalButtonText, themeStyles.modalText]}>A - Z</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.modalButton, themeStyles.modalButton]}
                 onPress={() => { setOrder('desc'); setFilterModalVisible(false); }}
               >
-                <Text style={[styles.modalButtonText, themeStyles.text]}>Z - A</Text>
+                <Text style={[styles.modalButtonText, themeStyles.modalText]}>Z - A</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
               style={[styles.closeButton, themeStyles.modalButton]}
               onPress={() => setFilterModalVisible(false)}
             >
-              <Text style={[styles.closeButtonText, themeStyles.text]}>Fechar</Text>
+              <Text style={[styles.closeButtonText, themeStyles.modalText]}>Fechar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -403,6 +403,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 170,
     height: 70,
+    marginTop: 10,
     resizeMode: 'contain',
     alignSelf: 'center',
   },
@@ -619,6 +620,9 @@ const lightTheme = StyleSheet.create({
   text: {
     color: '#000000'
   },
+  modalText: {
+    color: '#fff'
+  },
   input: {
     backgroundColor: '#f0f0f0',
     color: '#000000',
@@ -631,7 +635,7 @@ const lightTheme = StyleSheet.create({
     color: '#666666'
   },
   modalButton: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#8B0000',
     borderColor: '#cccccc'
   },
   placeholder: {
@@ -681,6 +685,9 @@ const darkTheme = StyleSheet.create({
   },
   text: {
     color: '#ffffff'
+  },
+  modalText: {
+    color: '#fff'
   },
   input: {
     backgroundColor: '#2a2a2a',

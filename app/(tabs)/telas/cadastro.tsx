@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, useColorScheme, StatusBar } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -17,6 +8,8 @@ interface CadastroProps {
 }
 
 const Cadastro: React.FC<CadastroProps> = ({ onNavigate }) => {
+  const colorScheme = useColorScheme();
+  const iconColor = colorScheme === 'dark' ? '#FFF' : '#333'; // Define a cor
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -47,7 +40,7 @@ const Cadastro: React.FC<CadastroProps> = ({ onNavigate }) => {
     }
   
     try {
-      const response = await axios.post('http://192.168.0.17:8000/api/cadastro/', formData);
+      const response = await axios.post('http://192.168.0.215:8000/api/cadastro/', formData);
       if (response.status === 200) {
         Alert.alert('Cadastro', 'Cadastro realizado com sucesso!');
         onNavigate('Login');
@@ -78,45 +71,55 @@ const Cadastro: React.FC<CadastroProps> = ({ onNavigate }) => {
     }
   };
   
+  const themeStyles = colorScheme === 'dark' ? darkTheme : lightTheme;
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAvoidingView style={[styles.container, themeStyles.container]} behavior="padding">
+      <StatusBar 
+        backgroundColor={themeStyles.container.backgroundColor} 
+        barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} 
+      />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Botão de Voltar */}
         <TouchableOpacity style={styles.backButton} onPress={() => onNavigate('ServiceHome')}>
-          <Icon name="arrow-left" size={20} color="#333" />
+          <Icon name="arrow-left" size={20} color={iconColor} />
         </TouchableOpacity>
 
-        <Text style={styles.title}>Cadastro de Usuário</Text>
+        <Text style={[styles.title, themeStyles.title]}>Cadastro de Usuário</Text>
 
         <TextInput
-          style={styles.input}
+          style={[styles.input, themeStyles.input]}
           placeholder="Nome"
+          placeholderTextColor={themeStyles.placeholder.color}
           value={formData.first_name}
           onChangeText={(text) => handleInputChange('first_name', text)}
         />
         <TextInput
-          style={styles.input}
+          style={[styles.input, themeStyles.input]}
           placeholder="Sobrenome"
+          placeholderTextColor={themeStyles.placeholder.color}
           value={formData.last_name}
           onChangeText={(text) => handleInputChange('last_name', text)}
         />
         <TextInput
-          style={styles.input}
+          style={[styles.input, themeStyles.input]}
           placeholder="Usuário"
+          placeholderTextColor={themeStyles.placeholder.color}
           value={formData.user}
           onChangeText={(text) => handleInputChange('user', text)}
         />
         <TextInput
-          style={styles.input}
+          style={[styles.input, themeStyles.input]}
           placeholder="Email"
+          placeholderTextColor={themeStyles.placeholder.color}
           keyboardType="email-address"
           value={formData.email}
           onChangeText={(text) => handleInputChange('email', text)}
         />
         <TextInput
-          style={styles.input}
+          style={[styles.input, themeStyles.input]}
           placeholder="Sala"
+          placeholderTextColor={themeStyles.placeholder.color}
           value={formData.sala}
           onChangeText={(text) => handleInputChange('sala', text)}
         />
@@ -125,6 +128,7 @@ const Cadastro: React.FC<CadastroProps> = ({ onNavigate }) => {
           <TouchableOpacity
             style={[
               styles.groupButton,
+              themeStyles.groupButton,
               formData.group === 'Coordenador' && styles.groupButtonSelected,
             ]}
             onPress={() => handleInputChange('group', 'Coordenador')}
@@ -134,6 +138,7 @@ const Cadastro: React.FC<CadastroProps> = ({ onNavigate }) => {
           <TouchableOpacity
             style={[
               styles.groupButton,
+              themeStyles.groupButton,
               formData.group === 'Professor' && styles.groupButtonSelected,
             ]}
             onPress={() => handleInputChange('group', 'Professor')}
@@ -142,16 +147,18 @@ const Cadastro: React.FC<CadastroProps> = ({ onNavigate }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.passwordContainer}>
+        <View style={[styles.passwordContainer, themeStyles.passwordContainer]}>
           <TextInput
             style={styles.passwordInput}
             placeholder="Senha"
+            placeholderTextColor={themeStyles.placeholder.color}
             secureTextEntry={!showPassword}
             value={formData.password}
             onChangeText={(text) => handleInputChange('password', text)}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color="#333" />
+          <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} color={iconColor} />
+
           </TouchableOpacity>
         </View>
 
@@ -212,6 +219,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   passwordContainer: {
+    height: 45,
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#CCC',
@@ -219,6 +227,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
+  
   },
   passwordInput: {
     flex: 1,
@@ -239,6 +248,60 @@ const styles = StyleSheet.create({
     top: 40,
     left: 20,
     zIndex: 1,
+  },
+});
+
+// Estilos de tema claro
+const lightTheme = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  title: {
+    color: '#000',
+  },
+  input: {
+    backgroundColor: '#f0f0f0',
+    color: '#000000',
+    borderColor: '#cccccc'
+  },
+  placeholder: {
+    color: '#666666'
+  },
+  passwordContainer: {
+    backgroundColor: '#f0f0f0',
+    color: '#000000',
+    borderColor: '#cccccc'
+  },
+  groupButton: {
+    backgroundColor: '#f0f0f0',
+  },
+});
+
+// Estilos de tema escuro
+const darkTheme = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  title: {
+    color: '#fff',
+  },
+  input: {
+    backgroundColor: '#2a2a2a',
+    color: '#ffffff',
+    borderColor: '#555555'
+  },
+  placeholder: {
+    color: '#aaaaaa'
+  },
+  passwordContainer: {
+    backgroundColor: '#2a2a2a',
+    color: '#ffffff',
+    borderColor: '#555555'
+  },
+  groupButton: {
+    backgroundColor: '#2a2a2a',
   },
 });
 
